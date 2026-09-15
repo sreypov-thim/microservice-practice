@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -48,5 +49,5 @@ app.post('/login', async (req, res) => {
     }
 });
 
-const PORT = 5002;
+const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => console.log(`Login Service running on port ${PORT}`));

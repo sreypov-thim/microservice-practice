@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const connectDB = require('./config/db');
@@ -48,5 +49,5 @@ app.post('/userregister', async (req, res) => {
     }
 });
 
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Registration Service running on port ${PORT}`));

@@ -1,9 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const proxy = require('express-http-proxy');
 const jwt = require('jsonwebtoken');
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_university_key_2026';
+
+const REGISTRATION_SERVICE_URL = process.env.REGISTRATION_SERVICE_URL || 'http://localhost:5001';
+const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || 'http://localhost:5002';
+const ADMIN_SERVICE_URL = process.env.ADMIN_SERVICE_URL || 'http://localhost:5003';
+const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'http://localhost:5004';
 
 // Middleware for Role-Based Access Control
 const verifyTokenAndRole = (requiredRole) => {
@@ -36,11 +43,11 @@ const verifyTokenAndRole = (requiredRole) => {
 };
 
 // Public Routes
-app.use('/register', proxy('http://localhost:5001'));
-app.use('/auth', proxy('http://localhost:5002'));
+app.use('/register', proxy(REGISTRATION_SERVICE_URL));
+app.use('/auth', proxy(AUTH_SERVICE_URL));
 
 // Admin Routes (Admin-only)
-app.use('/admin', verifyTokenAndRole('admin'), proxy('http://localhost:5003', {
+app.use('/admin', verifyTokenAndRole('admin'), proxy(ADMIN_SERVICE_URL, {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
         proxyReqOpts.headers['x-user-id'] = srcReq.user.id;
         proxyReqOpts.headers['x-user-role'] = srcReq.user.role;
@@ -49,7 +56,7 @@ app.use('/admin', verifyTokenAndRole('admin'), proxy('http://localhost:5003', {
 }));
 
 // User Routes (User-only)
-app.use('/user', verifyTokenAndRole('user'), proxy('http://localhost:5004', {
+app.use('/user', verifyTokenAndRole('user'), proxy(USER_SERVICE_URL, {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
         proxyReqOpts.headers['x-user-id'] = srcReq.user.id;
         proxyReqOpts.headers['x-user-role'] = srcReq.user.role;
@@ -57,5 +64,4 @@ app.use('/user', verifyTokenAndRole('user'), proxy('http://localhost:5004', {
     }
 }));
 
-const PORT = 5000;
 app.listen(PORT, () => console.log(`API Gateway running on port ${PORT}`));

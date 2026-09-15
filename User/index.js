@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const connectDB = require('./config/db');
@@ -50,5 +51,5 @@ app.put('/updateprofile', async (req, res) => {
     }
 });
 
-const PORT = 5004;
+const PORT = process.env.PORT || 5004;
 app.listen(PORT, () => console.log(`User Service running on port ${PORT}`));
