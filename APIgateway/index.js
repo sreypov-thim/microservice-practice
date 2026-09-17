@@ -7,10 +7,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_university_key_2026';
 
-const REGISTRATION_SERVICE_URL = process.env.REGISTRATION_SERVICE_URL || 'http://localhost:5001';
-const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || 'http://localhost:5002';
-const ADMIN_SERVICE_URL = process.env.ADMIN_SERVICE_URL || 'http://localhost:5003';
-const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'http://localhost:5004';
+const REGISTRATION_SERVICE_URL = process.env.REGISTRATION_SERVICE_URL || 'http://34.207.148.208:5001';
+const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || 'http://34.207.148.208:5002';
+const ADMIN_SERVICE_URL = process.env.ADMIN_SERVICE_URL || 'http://100.55.63.62:5003';
+const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'http://52.91.173.168:5004';
 
 // Middleware for Role-Based Access Control
 const verifyTokenAndRole = (requiredRole) => {
